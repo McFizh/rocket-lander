@@ -1,4 +1,4 @@
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 import type { NextPage } from 'next';
 
 import Head from 'next/head';
