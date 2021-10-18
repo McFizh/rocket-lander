@@ -1,7 +1,5 @@
 import dynamic from 'next/dynamic';
 import type { NextPage } from 'next';
-import Sketch from 'react-p5';
-import p5Types from 'p5';
 
 import Head from 'next/head';
 
@@ -14,14 +12,11 @@ const CodeEditorNoSSR = dynamic(
   { ssr: false }
 );
 
-const setup = (p5: p5Types, canvasParentRef: Element) => {
-  p5.createCanvas(500,500).parent(canvasParentRef);
-};
+const GameCanvasNoSSR = dynamic(
+  () => import('../components/GameCanvas'),
+  { ssr: false }
+);
 
-const draw = (p5: p5Types) => {
-  p5.background(0);
-  p5.ellipse(0, 0, 70, 70);
-};
 
 const Home: NextPage = () => {
   return (
@@ -41,7 +36,7 @@ const Home: NextPage = () => {
 
         <Grid container>
           <Grid item md={6}>
-            <Sketch setup={setup} draw={draw}/>
+            <GameCanvasNoSSR/>
           </Grid>
           <Grid item md={6}>
             <CodeEditorNoSSR/>
