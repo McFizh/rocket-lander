@@ -19,7 +19,7 @@ class Particle {
   run() {
     this.life--;
   }
-};
+}
 
 export default class ParticleSystem {
   particles:Particle[] = [];
@@ -73,4 +73,4 @@ export default class ParticleSystem {
       }
     }
   }
-};
+}
