@@ -5,14 +5,17 @@ import ParticleSystem from '../utils/ParticleSystem';
 
 let particleSystem: ParticleSystem | null = null;
 let rocketX = 290;
-let rocketY = 50;
+let rocketY = 400;
+let yVelocity = 0.0;
 
 const setup = (p5: p5Types, canvasParentRef: Element) => {
   p5
     .createCanvas(500, 500)
     .parent(canvasParentRef);
 
-  particleSystem = new ParticleSystem(p5, rocketX, rocketY+15);
+  particleSystem = new ParticleSystem(
+    p5, rocketX, rocketY + 10, 478
+  );
 };
 
 const drawMountain = (p5: p5Types) => {
@@ -24,10 +27,7 @@ const drawMountain = (p5: p5Types) => {
   p5.line(400, 480, 500, 300);
 };
 
-const drawRocket = (p5: p5Types) => {
-  const x = 290;
-  const y = 50;
-
+const drawRocket = (p5: p5Types, x: number, y: number) => {
   p5.stroke('white');
   p5.strokeWeight(3);
 
@@ -47,16 +47,22 @@ const drawRocket = (p5: p5Types) => {
 };
 
 const draw = (p5: p5Types) => {
+  const x = Math.round(rocketX);
+  const y = Math.round(rocketY);
+
   p5.background(0);
   p5.smooth();
   p5.noFill();
 
   drawMountain(p5);
-  drawRocket(p5);
+  drawRocket(p5, x, y);
 
   if(particleSystem) {
+    particleSystem.updatePosition(x, y + 10);
     particleSystem.run();
   }
+
+  rocketY+=yVelocity;
 };
 
 const GameCanvas = () => {
