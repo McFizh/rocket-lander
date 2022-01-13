@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import AceEditor from 'react-ace';
 
 import 'ace-builds/src-noconflict/theme-monokai';
@@ -14,13 +15,16 @@ const throttle = 5;
 return throttle;`;
 
 const CodeEditor = () => {
+  const [ code, setCode ] = useState(initialValue);
+
   return (
     <AceEditor
       mode="javascript"
       theme="monokai"
       width="100%"
       showPrintMargin={false}
-      value={initialValue}
+      value={code}
+      onChange={(e)=>setCode(e)}
     />
   );
 };

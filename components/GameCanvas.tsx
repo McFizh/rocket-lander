@@ -5,7 +5,7 @@ import ParticleSystem from '../utils/ParticleSystem';
 
 let particleSystem: ParticleSystem | null = null;
 let rocketX = 290;
-let rocketY = 400;
+let rocketY = 100;
 let yVelocity = 0.0;
 
 const setup = (p5: p5Types, canvasParentRef: Element) => {
@@ -14,7 +14,7 @@ const setup = (p5: p5Types, canvasParentRef: Element) => {
     .parent(canvasParentRef);
 
   particleSystem = new ParticleSystem(
-    p5, rocketX, rocketY + 10, 478
+    p5, rocketX, rocketY + 10, 476
   );
 };
 
@@ -67,7 +67,7 @@ const draw = (p5: p5Types) => {
 
 const GameCanvas = () => {
   return (
-    <Sketch setup={setup} draw={draw}/>
+    <Sketch className="p5Container" setup={setup} draw={draw}/>
   );
 };
 

@@ -7,3 +7,38 @@
   margin: 10px;
   font-size: 30pt;
 }
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 500px 200px auto;
+}
+
+.gridActionArea {
+  display: grid;
+  grid-template-rows: auto 100px;
+  grid-template-columns: auto;
+}
+
+.gridInfoArea {
+  font-family: 'Dongle', sans-serif;
+  font-size: 20pt;
+  padding-left: 10px;
+  line-height: 1;
+}
+
+.gridButtonArea {
+  text-align: center;
+}
+
+.gridButtonArea button:not(:last-child) {
+  margin-right: 15px;
+}
+
+.gridButtonArea button {
+  width: 64px;
+  height: 64px;
+}
+
+.missionTime {
+  font-family: 'Orbitron', sans-serif;
+}

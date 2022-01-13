@@ -1,9 +1,10 @@
 import dynamic from 'next/dynamic';
 import type { NextPage } from 'next';
-
 import Head from 'next/head';
 
-import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay, faPause, faSync } from '@fortawesome/free-solid-svg-icons';
 
 import styles from '../styles/Home.module.css';
 
@@ -19,6 +20,14 @@ const GameCanvasNoSSR = dynamic(
 
 
 const Home: NextPage = () => {
+  const onResetClicked = () => {
+
+  };
+
+  const onPlayPauseClicked = () => {
+
+  };
+
   return (
     <div>
       <Head>
@@ -28,20 +37,35 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <Grid container>
-          <Grid item md={12}>
+        <div className={styles.gridContainer}>
             <h1 className={styles.title}>Rocket Lander</h1>
-          </Grid>
-        </Grid>
+        </div>
 
-        <Grid container>
-          <Grid item md={6}>
+        <div className={styles.gridContainer}>
+          <div>
             <GameCanvasNoSSR/>
-          </Grid>
-          <Grid item md={6}>
+          </div>
+          <div className={styles.gridActionArea}>
+            <div className={styles.gridInfoArea}>
+              Mission time:<br/>
+              <span className={styles.missionTime}>00:00</span><br/>
+              <br/>
+              Fuel remaining:<br/>
+              <span className={styles.missionTime}>100 %</span><br/>
+            </div>
+            <div className={styles.gridButtonArea}>
+              <Button variant="contained" onClick={onResetClicked}>
+                <FontAwesomeIcon icon={faSync} />
+              </Button>
+              <Button variant="contained" onClick={onPlayPauseClicked}>
+                <FontAwesomeIcon icon={faPlay} />
+              </Button>
+            </div>
+          </div>
+          <div>
             <CodeEditorNoSSR/>
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       </main>
     </div>
   );

@@ -3,10 +3,11 @@ import p5Types from 'p5';
 class Particle {
   x = 0;
   y = 0;
+  color = 'red';
   xSpeed = 0;
   ySpeed = 0;
   yLimit = 0;
-  life = 80;
+  life = 40;
   p5: p5Types;
 
   constructor(p5: p5Types, x: number, y: number, xSpeed: number, ySpeed: number, yLimit: number) {
@@ -16,9 +17,11 @@ class Particle {
     this.ySpeed = ySpeed;
     this.yLimit = yLimit;
     this.p5 = p5;
+    this.color = Math.random() > 0.5 ? 'red' : 'orange';
   }
 
   display() {
+    this.p5.stroke(this.color);
     this.p5.ellipse( Math.round(this.x), Math.round(this.y), 4, 4);
   }
 
@@ -29,6 +32,7 @@ class Particle {
       this.ySpeed = -1 * this.ySpeed;
       this.xSpeed *= 4;
       this.life /= 2;
+      this.color = 'gray';
     }
     this.life--;
   }
@@ -70,7 +74,9 @@ export default class ParticleSystem {
 
     this.particles.push(
       new Particle(
-        this.p5, this.x, this.y, (Math.random()/2)-0.25, Math.random()+0.5, this.yLimit
+        this.p5,
+        this.x+(Math.random()*8-4), this.y,
+        (Math.random()/2)-0.25, Math.random()+1.5, this.yLimit
       )
     );
   }
