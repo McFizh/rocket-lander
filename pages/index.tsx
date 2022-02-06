@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import dynamic from 'next/dynamic';
 import type { NextPage } from 'next';
 import Head from 'next/head';
@@ -5,6 +6,8 @@ import Head from 'next/head';
 import Button from '@mui/material/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faSync } from '@fortawesome/free-solid-svg-icons';
+
+import { StoreContext } from '../utils/Store';
 
 import styles from '../styles/Home.module.css';
 
@@ -20,12 +23,14 @@ const GameCanvasNoSSR = dynamic(
 
 
 const Home: NextPage = () => {
-  const onResetClicked = () => {
+  const { running, setRunning } = useContext(StoreContext);
 
+  const onResetClicked = () => {
+    setRunning(false);
   };
 
   const onPlayPauseClicked = () => {
-
+    setRunning(!running);
   };
 
   return (
@@ -55,10 +60,10 @@ const Home: NextPage = () => {
             </div>
             <div className={styles.gridButtonArea}>
               <Button variant="contained" onClick={onResetClicked}>
-                <FontAwesomeIcon icon={faSync} />
+                <FontAwesomeIcon icon={ faSync} />
               </Button>
               <Button variant="contained" onClick={onPlayPauseClicked}>
-                <FontAwesomeIcon icon={faPlay} />
+                <FontAwesomeIcon icon={ running ? faPause : faPlay} />
               </Button>
             </div>
           </div>
