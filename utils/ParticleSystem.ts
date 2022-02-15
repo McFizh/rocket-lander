@@ -21,7 +21,7 @@ class Particle {
   }
 
   display() {
-    this.p5.stroke(this.color);
+    this.p5.stroke( this.life < 10 ? 'gray' : this.color );
     this.p5.ellipse( Math.round(this.x), Math.round(this.y), 4, 4);
   }
 
@@ -44,6 +44,7 @@ export default class ParticleSystem {
   x: number = 0;
   y: number = 0;
   yLimit: number = 0;
+  yVelocity: number = 1.5;
 
   constructor(x: number, y:number, yLimit: number) {
     this.particles = [];
@@ -56,9 +57,10 @@ export default class ParticleSystem {
     this.p5 = p5;
   }
 
-  updatePosition(x: number, y:number) {
+  updateParams(x: number, y:number, v:number) {
     this.x = x;
     this.y = y;
+    this.yVelocity = v + 1.5;
   }
 
   addParticle() {
@@ -70,7 +72,8 @@ export default class ParticleSystem {
       new Particle(
         this.p5,
         this.x+(Math.random()*8-4), this.y,
-        (Math.random()/2)-0.25, Math.random()+1.5, this.yLimit
+        (Math.random()/2)-0.25, Math.random()+this.yVelocity,
+        this.yLimit
       )
     );
   }
@@ -87,7 +90,7 @@ export default class ParticleSystem {
     }
   }
 
-  update() {
+  update(createNew: boolean) {
     for(let idx = (this.particles.length - 1); idx >= 0; idx --) {
       this.particles[idx].run();
       if(this.particles[idx].life <= 0) {
@@ -95,7 +98,7 @@ export default class ParticleSystem {
       }
     }
 
-    if(this.particles.length < 50) {
+    if(createNew && this.particles.length < 50) {
       this.addParticle();
     }
   }

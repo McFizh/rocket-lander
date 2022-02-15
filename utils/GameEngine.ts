@@ -28,8 +28,8 @@ export class GameEngine {
     const x = Math.round(this.rocketX);
     const y = Math.round(this.rocketY);
 
-    this.particleSystem.updatePosition(x, y + 10);
-    this.particleSystem.update();
+    this.particleSystem.updateParams(x, y + 10, this.yVelocity);
+    this.particleSystem.update(this.fuel > 0);
 
     const code = `((fuel_level, height) => {${this.rocketCode}})(${this.fuel}, ${470 - this.rocketY})`;
 
