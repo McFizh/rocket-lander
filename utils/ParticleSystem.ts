@@ -45,21 +45,15 @@ export default class ParticleSystem {
   y: number = 0;
   yLimit: number = 0;
 
-  constructor(p5: p5Types, x: number, y:number, yLimit: number) {
+  constructor(x: number, y:number, yLimit: number) {
     this.particles = [];
-    this.p5 = p5;
     this.x = x;
     this.y = y;
     this.yLimit = yLimit;
   }
 
-  run() {
-    this.update();
-    this.display();
-
-    if(this.particles.length < 50) {
-      this.addParticle();
-    }
+  setP5Instance(p5: p5Types) {
+    this.p5 = p5;
   }
 
   updatePosition(x: number, y:number) {
@@ -100,5 +94,13 @@ export default class ParticleSystem {
         this.particles.splice(idx, 1);
       }
     }
+
+    if(this.particles.length < 50) {
+      this.addParticle();
+    }
+  }
+
+  reset() {
+    this.particles = [];
   }
 }

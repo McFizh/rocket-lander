@@ -1,28 +1,17 @@
-import { useCallback, useContext, useEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import P5 from 'p5';
 
-import ParticleSystem from '../utils/ParticleSystem';
-import { StoreContext } from '../utils/Store';
+import { GameEngine } from '../utils/GameEngine';
 
-let particleSystem: ParticleSystem | null = null;
-let rocketX = 290;
-let rocketY = 100;
-let yVelocity = 0.0;
+let gameEngine: GameEngine;
 
 const setup = (p5: P5, canvasParentRef: Element | null) => {
   if(canvasParentRef === null) {
     return;
   }
 
-  p5
-    .createCanvas(500, 500)
-    .parent(canvasParentRef);
-
-  p5.background(0);
-
-  particleSystem = new ParticleSystem(
-    p5, rocketX, rocketY + 10, 476
-  );
+  p5.createCanvas(500, 500).parent(canvasParentRef);
+  gameEngine.particleSystem.setP5Instance(p5);
 };
 
 const drawMountain = (p5: P5) => {
@@ -54,8 +43,8 @@ const drawRocket = (p5: P5, x: number, y: number) => {
 };
 
 const draw = (p5: P5) => {
-  const x = Math.round(rocketX);
-  const y = Math.round(rocketY);
+  const x = Math.round(gameEngine.rocketX);
+  const y = Math.round(gameEngine.rocketY);
 
   p5.background(0);
   p5.smooth();
@@ -64,23 +53,19 @@ const draw = (p5: P5) => {
   drawMountain(p5);
   drawRocket(p5, x, y);
 
-  if(particleSystem) {
-    particleSystem.updatePosition(x, y + 10);
-    particleSystem.run();
-  }
-
-  rocketY+=yVelocity;
+  gameEngine.particleSystem.display();
+  gameEngine.update();
 };
 
-const GameCanvas = () => {
-  const { running, setRunning } = useContext(StoreContext);
-
+const GameCanvas = ({ engine }: { engine: GameEngine }) => {
   const ref = useRef(null);
 
   const setRef = useCallback( (node) => {
     if(ref.current) {
       // Unmount
     }
+
+    gameEngine = engine;
 
     if(node) {
       new P5( (p) => {
@@ -90,7 +75,8 @@ const GameCanvas = () => {
     }
 
     ref.current = node;
-  }, []);
+  }, [engine]);
+
   return (
     <div className="p5Container" ref={setRef} />
   );

@@ -10,6 +10,7 @@ import { faPlay, faPause, faSync } from '@fortawesome/free-solid-svg-icons';
 import { StoreContext } from '../utils/Store';
 
 import styles from '../styles/Home.module.css';
+import { GameEngine } from '../utils/GameEngine';
 
 const CodeEditorNoSSR = dynamic(
   () => import('../components/CodeEditor'),
@@ -21,15 +22,23 @@ const GameCanvasNoSSR = dynamic(
   { ssr: false }
 );
 
+const engine = new GameEngine();
 
 const Home: NextPage = () => {
   const { running, setRunning } = useContext(StoreContext);
 
   const onResetClicked = () => {
     setRunning(false);
+    engine.reset();
   };
 
   const onPlayPauseClicked = () => {
+    if(!running) {
+      engine.start();
+    } else {
+      engine.pause();
+    }
+
     setRunning(!running);
   };
 
@@ -48,7 +57,7 @@ const Home: NextPage = () => {
 
         <div className={styles.gridContainer}>
           <div>
-            <GameCanvasNoSSR/>
+            <GameCanvasNoSSR engine={engine}/>
           </div>
           <div className={styles.gridActionArea}>
             <div className={styles.gridInfoArea}>
@@ -68,7 +77,7 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div>
-            <CodeEditorNoSSR/>
+            <CodeEditorNoSSR engine={engine}/>
           </div>
         </div>
       </main>

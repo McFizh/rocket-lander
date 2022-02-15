@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import AceEditor from 'react-ace';
 
+import { GameEngine } from '../utils/GameEngine';
+
 import 'ace-builds/src-noconflict/theme-monokai';
 import 'ace-builds/src-noconflict/mode-javascript';
 
@@ -14,8 +16,10 @@ const throttle = 5;
 
 return throttle;`;
 
-const CodeEditor = () => {
+const CodeEditor = ({ engine }: { engine: GameEngine }) => {
   const [ code, setCode ] = useState(initialValue);
+
+  engine.setCode(code);
 
   return (
     <AceEditor
