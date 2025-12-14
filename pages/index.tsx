@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import dynamic from 'next/dynamic';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 
@@ -11,11 +10,8 @@ import { StoreContext } from '../utils/Store';
 
 import styles from '../styles/Home.module.css';
 import { GameEngine } from '../utils/GameEngine';
-
-const CodeEditorNoSSR = dynamic(
-  () => import('../components/CodeEditor'),
-  { ssr: false }
-);
+import CodeEditor from '../components/CodeEditor';
+import dynamic from 'next/dynamic';
 
 const GameCanvasNoSSR = dynamic(
   () => import('../components/GameCanvas'),
@@ -69,7 +65,7 @@ const Home: NextPage = () => {
             </div>
             <div className={styles.gridButtonArea}>
               <Button variant="contained" onClick={onResetClicked}>
-                <FontAwesomeIcon icon={ faSync} />
+                <FontAwesomeIcon icon={ faSync } />
               </Button>
               <Button variant="contained" onClick={onPlayPauseClicked}>
                 <FontAwesomeIcon icon={ running ? faPause : faPlay} />
@@ -77,7 +73,7 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div>
-            <CodeEditorNoSSR engine={engine}/>
+            <CodeEditor engine={engine}/>
           </div>
         </div>
       </main>

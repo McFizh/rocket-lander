@@ -58,9 +58,9 @@ const draw = (p5: P5) => {
 };
 
 const GameCanvas = ({ engine }: { engine: GameEngine }) => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement | null>(null);
 
-  const setRef = useCallback( (node) => {
+  const setRef = useCallback( (node: HTMLDivElement) => {
     if(ref.current) {
       // Unmount
     }
