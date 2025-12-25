@@ -1,6 +1,7 @@
 import ParticleSystem from './ParticleSystem';
 
 const YLimit = 470;
+const YInit = 70;
 
 export class GameEngine {
   running = false;
@@ -21,23 +22,22 @@ export class GameEngine {
   }
 
   update() {
-    if(!this.running) {
-      return;
-    }
+    if(!this.running) return;
 
     const x = Math.round(this.rocketX);
     const y = Math.round(this.rocketY);
-
-    this.particleSystem.updateParams(x, y + 10, this.yVelocity);
-    this.particleSystem.update(this.fuel > 0);
 
     const code = `((fuel_level, height) => {${this.rocketCode}})(${this.fuel}, ${470 - this.rocketY})`;
 
     let throttle = eval(code);
     throttle = throttle < 0 || throttle > 10 || this.fuel <= 0 ? 0 : throttle;
 
-    this.fuel -= throttle;
+    this.fuel -= 4 * Math.log10(1 + throttle);
     this.fuel = this.fuel < 0 ? 0 : this.fuel;
+
+
+    this.particleSystem.updateParams(x, y + 10, this.yVelocity);
+    this.particleSystem.update(this.fuel > 0 && throttle > 0);
 
     this.yVelocity += 0.01 - (throttle * 0.002);
 
@@ -53,11 +53,11 @@ export class GameEngine {
     this.rocketCodeShadow = codeToRun;
   }
 
-  reset() {
+  reset() {   
     this.running = false;
     this.yVelocity = 0.1;
     this.rocketX = 270;
-    this.rocketY = 100;
+    this.rocketY = YInit;
     this.fuel = 1000;
     this.particleSystem.reset();
   };
@@ -70,7 +70,7 @@ export class GameEngine {
     this.running = true;
 
     // Only set new code, if this is first start after reset
-    if(this.rocketY === 100) {
+    if(this.rocketY === YInit) {
       this.rocketCode = this.rocketCodeShadow;
     }
   }

@@ -29,8 +29,8 @@ class Particle {
     this.x+=this.xSpeed;
     this.y+=this.ySpeed;
     if(this.y >= this.yLimit && this.ySpeed > 0) {
-      this.ySpeed = -1 * this.ySpeed;
-      this.xSpeed *= 4;
+      this.ySpeed = -1 * (this.ySpeed/3);
+      this.xSpeed *= 12;
       this.life /= 2;
       this.color = 'gray';
     }

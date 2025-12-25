@@ -62,7 +62,7 @@ const GameCanvas = ({ engine }: { engine: GameEngine }) => {
 
   const setRef = useCallback( (node: HTMLDivElement) => {
     if(ref.current) {
-      // Unmount
+      return;
     }
 
     gameEngine = engine;
@@ -76,6 +76,7 @@ const GameCanvas = ({ engine }: { engine: GameEngine }) => {
 
     ref.current = node;
   }, [engine]);
+
 
   return (
     <div className="p5Container" ref={setRef} />

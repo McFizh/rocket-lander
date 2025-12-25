@@ -21,10 +21,11 @@ const GameCanvasNoSSR = dynamic(
 const engine = new GameEngine();
 
 const Home: NextPage = () => {
-  const { running, setRunning } = useContext(StoreContext);
+  const { running, setRunning, fuel, setFuel } = useContext(StoreContext);
 
   const onResetClicked = () => {
     setRunning(false);
+    setFuel(100),
     engine.reset();
   };
 
@@ -61,7 +62,7 @@ const Home: NextPage = () => {
               <span className={styles.missionTime}>00:00</span><br/>
               <br/>
               Fuel remaining:<br/>
-              <span className={styles.missionTime}>100 %</span><br/>
+              <span className={styles.missionTime}>{fuel} %</span><br/>
             </div>
             <div className={styles.gridButtonArea}>
               <Button variant="contained" onClick={onResetClicked}>

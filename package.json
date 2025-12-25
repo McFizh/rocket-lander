@@ -15,11 +15,11 @@
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.1",
     "@mui/material": "^5.0.4",
-    "next": "^14.2.35",
+    "next": "^15.4.10",
     "p5": "^1.11.11",
-    "react": "^18.2.0",
-    "react-ace": "^11.0.1",
-    "react-dom": "^18.2.0"
+    "react": "^19.2.3",
+    "react-ace": "^14.0.1",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@types/node": "^20.14.8",
@@ -27,6 +27,6 @@
     "@types/react": "^18.2.0",
     "eslint": "^8.6.0",
     "eslint-config-next": "^12.0.8",
-    "typescript": "^4.4.4"
+    "typescript": "^5.9.3"
   }
 }
