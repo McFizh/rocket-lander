@@ -10,7 +10,6 @@ import { StoreContext } from '../utils/Store';
 
 import styles from '../styles/Home.module.css';
 import { GameEngine } from '../utils/GameEngine';
-import CodeEditor from '../components/CodeEditor';
 import dynamic from 'next/dynamic';
 
 const GameCanvasNoSSR = dynamic(
@@ -18,14 +17,24 @@ const GameCanvasNoSSR = dynamic(
   { ssr: false }
 );
 
+const CodeEditorNoSSR = dynamic(
+  () => import('../components/CodeEditor'),
+  { ssr: false }
+);
+
 const engine = new GameEngine();
 
+const formatMissionTime = (totalSeconds: number) => {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+};
+
 const Home: NextPage = () => {
-  const { running, setRunning, fuel, setFuel } = useContext(StoreContext);
+  const { running, fuel, error, elapsedSeconds } = useContext(StoreContext);
 
   const onResetClicked = () => {
-    setRunning(false);
-    setFuel(100),
     engine.reset();
   };
 
@@ -35,8 +44,6 @@ const Home: NextPage = () => {
     } else {
       engine.pause();
     }
-
-    setRunning(!running);
   };
 
   return (
@@ -59,10 +66,12 @@ const Home: NextPage = () => {
           <div className={styles.gridActionArea}>
             <div className={styles.gridInfoArea}>
               Mission time:<br/>
-              <span className={styles.missionTime}>00:00</span><br/>
+              <span className={styles.missionTime}>{formatMissionTime(elapsedSeconds)}</span><br/>
               <br/>
               Fuel remaining:<br/>
               <span className={styles.missionTime}>{fuel} %</span><br/>
+              <br/>
+              {error && <span role="alert">Script error: {error}</span>}
             </div>
             <div className={styles.gridButtonArea}>
               <Button variant="contained" onClick={onResetClicked}>
@@ -74,7 +83,7 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div>
-            <CodeEditor engine={engine}/>
+            <CodeEditorNoSSR engine={engine}/>
           </div>
         </div>
       </main>

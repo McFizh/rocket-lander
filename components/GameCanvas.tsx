@@ -1,9 +1,14 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useContext, useRef } from 'react';
 import P5 from 'p5';
 
 import { GameEngine } from '../utils/GameEngine';
+import { StoreContext } from '../utils/Store';
 
 let gameEngine: GameEngine;
+let syncFuel: (fuel: number) => void;
+let syncError: (error: string | null) => void;
+let syncRunning: (running: boolean) => void;
+let syncElapsedSeconds: (elapsedSeconds: number) => void;
 
 const setup = (p5: P5, canvasParentRef: Element | null) => {
   if(canvasParentRef === null) {
@@ -55,10 +60,16 @@ const draw = (p5: P5) => {
 
   gameEngine.particleSystem.display();
   gameEngine.update();
+
+  syncFuel(Math.round(gameEngine.fuel));
+  syncError(gameEngine.lastError);
+  syncRunning(gameEngine.running);
+  syncElapsedSeconds(Math.floor(gameEngine.getElapsedMs() / 1000));
 };
 
 const GameCanvas = ({ engine }: { engine: GameEngine }) => {
   const ref = useRef<HTMLDivElement | null>(null);
+  const { setFuel, setError, setRunning, setElapsedSeconds } = useContext(StoreContext);
 
   const setRef = useCallback( (node: HTMLDivElement) => {
     if(ref.current) {
@@ -66,6 +77,38 @@ const GameCanvas = ({ engine }: { engine: GameEngine }) => {
     }
 
     gameEngine = engine;
+
+    let lastFuel: number | null = null;
+    syncFuel = (fuel: number) => {
+      if(fuel !== lastFuel) {
+        lastFuel = fuel;
+        setFuel(fuel);
+      }
+    };
+
+    let lastError: string | null = null;
+    syncError = (error: string | null) => {
+      if(error !== lastError) {
+        lastError = error;
+        setError(error);
+      }
+    };
+
+    let lastRunning: boolean | null = null;
+    syncRunning = (running: boolean) => {
+      if(running !== lastRunning) {
+        lastRunning = running;
+        setRunning(running);
+      }
+    };
+
+    let lastElapsedSeconds: number | null = null;
+    syncElapsedSeconds = (elapsedSeconds: number) => {
+      if(elapsedSeconds !== lastElapsedSeconds) {
+        lastElapsedSeconds = elapsedSeconds;
+        setElapsedSeconds(elapsedSeconds);
+      }
+    };
 
     if(node) {
       new P5( (p) => {
@@ -75,7 +118,7 @@ const GameCanvas = ({ engine }: { engine: GameEngine }) => {
     }
 
     ref.current = node;
-  }, [engine]);
+  }, [engine, setFuel, setError, setRunning, setElapsedSeconds]);
 
 
   return (
