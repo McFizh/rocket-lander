@@ -4,6 +4,8 @@ import P5 from 'p5';
 import { GameEngine } from '../utils/GameEngine';
 import { StoreContext } from '../utils/Store';
 
+P5.disableFriendlyErrors = true;
+
 let gameEngine: GameEngine;
 let syncFuel: (fuel: number) => void;
 let syncError: (error: string | null) => void;
@@ -11,7 +13,7 @@ let syncRunning: (running: boolean) => void;
 let syncElapsedSeconds: (elapsedSeconds: number) => void;
 
 const setup = (p5: P5, canvasParentRef: Element | null) => {
-  if(canvasParentRef === null) {
+  if (canvasParentRef === null) {
     return;
   }
 
@@ -33,18 +35,18 @@ const drawRocket = (p5: P5, x: number, y: number) => {
   p5.strokeWeight(3);
 
   // Landing gears
-  p5.line(x-15, y+10, x-8, y+10);
-  p5.line(x+15, y+10, x+8, y+10);
+  p5.line(x - 15, y + 10, x - 8, y + 10);
+  p5.line(x + 15, y + 10, x + 8, y + 10);
 
-  p5.line(x-11, y+10, x-11, y);
-  p5.line(x+11, y+10, x+11, y);
+  p5.line(x - 11, y + 10, x - 11, y);
+  p5.line(x + 11, y + 10, x + 11, y);
 
   // Rocket body
-  p5.line(x-11, y, x+11, y);
-  p5.line(x-11, y, x-11, y-20);
-  p5.line(x+11, y, x+11, y-20);
-  p5.line(x+11, y-20, x, y-30);
-  p5.line(x-11, y-20, x, y-30);
+  p5.line(x - 11, y, x + 11, y);
+  p5.line(x - 11, y, x - 11, y - 20);
+  p5.line(x + 11, y, x + 11, y - 20);
+  p5.line(x + 11, y - 20, x, y - 30);
+  p5.line(x - 11, y - 20, x, y - 30);
 };
 
 const draw = (p5: P5) => {
@@ -71,8 +73,8 @@ const GameCanvas = ({ engine }: { engine: GameEngine }) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const { setFuel, setError, setRunning, setElapsedSeconds } = useContext(StoreContext);
 
-  const setRef = useCallback( (node: HTMLDivElement) => {
-    if(ref.current) {
+  const setRef = useCallback((node: HTMLDivElement) => {
+    if (ref.current) {
       return;
     }
 
@@ -80,7 +82,7 @@ const GameCanvas = ({ engine }: { engine: GameEngine }) => {
 
     let lastFuel: number | null = null;
     syncFuel = (fuel: number) => {
-      if(fuel !== lastFuel) {
+      if (fuel !== lastFuel) {
         lastFuel = fuel;
         setFuel(fuel);
       }
@@ -88,7 +90,7 @@ const GameCanvas = ({ engine }: { engine: GameEngine }) => {
 
     let lastError: string | null = null;
     syncError = (error: string | null) => {
-      if(error !== lastError) {
+      if (error !== lastError) {
         lastError = error;
         setError(error);
       }
@@ -96,7 +98,7 @@ const GameCanvas = ({ engine }: { engine: GameEngine }) => {
 
     let lastRunning: boolean | null = null;
     syncRunning = (running: boolean) => {
-      if(running !== lastRunning) {
+      if (running !== lastRunning) {
         lastRunning = running;
         setRunning(running);
       }
@@ -104,14 +106,14 @@ const GameCanvas = ({ engine }: { engine: GameEngine }) => {
 
     let lastElapsedSeconds: number | null = null;
     syncElapsedSeconds = (elapsedSeconds: number) => {
-      if(elapsedSeconds !== lastElapsedSeconds) {
+      if (elapsedSeconds !== lastElapsedSeconds) {
         lastElapsedSeconds = elapsedSeconds;
         setElapsedSeconds(elapsedSeconds);
       }
     };
 
-    if(node) {
-      new P5( (p) => {
+    if (node) {
+      new P5((p) => {
         p.setup = () => setup(p, node);
         p.draw = () => draw(p);
       });
