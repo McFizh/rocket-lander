@@ -51,7 +51,6 @@ const Home: NextPage = () => {
       <Head>
         <title>Rocket landing game</title>
         <meta name="description" content="Programmable rocket landing challenge" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
